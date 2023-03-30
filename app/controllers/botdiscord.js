@@ -41,6 +41,10 @@ const activeRol = async (req, res) => {
             const nft = await colsutaGraphql(queryGql, variables)
             //console.log(nft.nfts)
 
+            if (!nft.nfts.length > 0) {
+                return res.status(204).send({ error: "El usuario no tiene nfts"})
+            } 
+
             const result = Array.from(new Set(nft.nfts.map(item => { return item.artist_id })));
 
             let artistas = ""

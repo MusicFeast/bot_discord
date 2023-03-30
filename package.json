@@ -4,7 +4,7 @@
   "description": "example project react with nodejs",
   "main": "server.js",
   "scripts": {
-    "start": "node server.bundle.js",
+    "start": "nodemon ./server.js",
     "defix": "NODE_PATH=/opt/defix3_back_mainnet node server.js",
     "build": "webpack",
     "dev": "nodemon ./serverlocal.js"
