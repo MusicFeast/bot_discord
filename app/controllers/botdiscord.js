@@ -20,7 +20,7 @@ const activeRol = async (req, res) => {
         const valid_user = await conexion.query(" select id, wallet, discord_id from backend_userdiscord bu where wallet = $1 ", [wallet]);
 
         if(valid_user.rows.length <= 0) { 
-            res.json({result: "error", data: "El usuario near no tiene cuenta discrod registrada"}) 
+            res.status(500).json({result: "error", data: "El usuario near no tiene cuenta discrod registrada"}) 
         } else {
             const user_discrod = valid_user.rows[0].discord_id
             const user_id = valid_user.rows[0].id
@@ -99,7 +99,7 @@ const activeRol = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.json({result: "error", data: error})
+        res.status(500).json({result: "error", data: error})
     }
 }
 
