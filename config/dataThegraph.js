@@ -18,12 +18,12 @@ const colsutaGraphql = async (query, variables) => {
     try {
         console.log(process.env.GRAPH_URL)
         if(!variables) {
-            const result = await client.query({
+            let result = await client.query({
                 query
             })
             return result.data
         } else {
-            const result = await client.query({
+            let result = await client.query({
                 query,
                 variables
             })

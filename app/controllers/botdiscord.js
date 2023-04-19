@@ -15,15 +15,15 @@ const activeRol = async (req, res) => {
     console.log(process.env.TOKEN_DISCORD)
     try {
         const { wallet } = req.body
-        const conexion = await dbConnect()
+        let conexion = await dbConnect()
 
-        const valid_user = await conexion.query(" select id, wallet, discord_id from backend_userdiscord bu where wallet = $1 ", [wallet]);
+        let valid_user = await conexion.query(" select id, wallet, discord_id from backend_userdiscord bu where wallet = $1 ", [wallet]);
 
         if(valid_user.rows.length <= 0) { 
             res.status(500).json({result: "error", data: "El usuario near no tiene cuenta discrod registrada"}) 
         } else {
-            const user_discrod = valid_user.rows[0].discord_id
-            const user_id = valid_user.rows[0].id
+            let user_discrod = valid_user.rows[0].discord_id
+            let user_id = valid_user.rows[0].id
 
             console.log("esta es la wallet - ", wallet, "user discrod: ", user_discrod)
             let queryGql = gql`
@@ -38,14 +38,14 @@ const activeRol = async (req, res) => {
 
             let variables = { wallet: wallet }
 
-            const nft = await colsutaGraphql(queryGql, variables)
+            let nft = await colsutaGraphql(queryGql, variables)
             //console.log(nft.nfts)
 
             if (!nft.nfts.length > 0) {
                 return res.status(204).send({ error: "El usuario no tiene nfts"})
             } 
 
-            const result = Array.from(new Set(nft.nfts.map(item => { return item.artist_id })));
+            let result = Array.from(new Set(nft.nfts.map(item => { return item.artist_id })));
 
             let artistas = ""
             result.forEach((item, i) => { 
@@ -53,14 +53,14 @@ const activeRol = async (req, res) => {
             })
             console.log("resultado artistas_id: ", artistas)
             
-            const resultados = await conexion.query("   select bad.id, ba.id_collection as artist_id, role_id \
+            let resultados = await conexion.query("   select bad.id, ba.id_collection as artist_id, role_id \
                                                         from backend_artistdiscord bad \
                                                         inner join backend_artist ba on ba.id = bad.artist_id  \
                                                         where ba.id_collection in (" + artistas + ")  \
             ");
             console.log(resultados.rows)
 
-            const rol_user = await conexion.query(" select bad.role_id, bud.wallet  \
+            let rol_user = await conexion.query(" select bad.role_id, bud.wallet  \
                 from backend_userroles bu \
                 inner join backend_artistdiscord bad on bad.id = bu.role_id \
                 inner join backend_userdiscord bud on bud.id = bu.user_id \
