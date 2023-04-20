@@ -4,18 +4,17 @@ const fetch = require('node-fetch');
 const createHttpLink = require('apollo-link-http').createHttpLink;
 const InMemoryCache = require('apollo-cache-inmemory').InMemoryCache;
 
-
-const client = new ApolloClient({
-    link: createHttpLink({
-        uri: process.env.GRAPH_URL,//"https://api.thegraph.com/subgraphs/name/hrpalencia/pruebas2",
-        fetch: fetch
-    }),
-    cache: new InMemoryCache()
-});
-
 //async function colsutaGraphql (query, variables) {
 const colsutaGraphql = async (query, variables) => {
     try {
+        let client = new ApolloClient({
+            link: createHttpLink({
+                uri: process.env.GRAPH_URL,//"https://api.thegraph.com/subgraphs/name/hrpalencia/pruebas2",
+                fetch: fetch
+            }),
+            cache: new InMemoryCache()
+        });
+
         console.log(process.env.GRAPH_URL)
         if(!variables) {
             let result = await client.query({
