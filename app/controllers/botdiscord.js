@@ -28,7 +28,7 @@ const activeRol = async (req, res) => {
             console.log("esta es la wallet - ", wallet, "user discrod: ", user_discrod)
             let queryGql = gql`
                 query MyQuery($wallet: String!) {
-                    nfts(where: {owner_id: $wallet, reference: "1"}) {
+                    nfts(where: {owner_id: $wallet, typetoken_id: "1"}) {
                         serie_id
                         owner_id
                         artist_id
@@ -110,7 +110,6 @@ const activeRol = async (req, res) => {
 
 
 module.exports = { activeRol }
-
 
 
 
