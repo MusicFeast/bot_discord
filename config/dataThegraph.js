@@ -15,7 +15,7 @@ const colsutaGraphql = async (query, variables) => {
             cache: new InMemoryCache()
         });
 
-        console.log(process.env.GRAPH_URL)
+        // console.log(process.env.GRAPH_URL)
         if(!variables) {
             let result = await client.query({
                 query
@@ -26,14 +26,14 @@ const colsutaGraphql = async (query, variables) => {
                 query,
                 variables
             })
-            //console.log(result.data.nftmarkets)
+            //// console.log(result.data.nftmarkets)
             return result.data
         }
     } catch(error) {
-        console.log('----------------------------------------------------------------------------------------')
-        console.log(process.env.GRAPH_URL)
-        console.log(error)
-        console.log('----------------------------------------------------------------------------------------')
+        // console.log('----------------------------------------------------------------------------------------')
+        // console.log(process.env.GRAPH_URL)
+        // console.log(error)
+        // console.log('----------------------------------------------------------------------------------------')
         return []
     }
 }

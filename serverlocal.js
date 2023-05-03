@@ -26,5 +26,5 @@ app.use('/api/v1', require('./app/routes'))
 
 
 app.listen(port, () => {  
-    console.log(`Server listening on the port::${port}`);
+    // console.log(`Server listening on the port::${port}`);
 });

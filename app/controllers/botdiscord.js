@@ -12,7 +12,7 @@ const dbConnect = require('../../config/postgres')
 
 //activar roles en discord, dependiendo de los nft tier que tenga el usuario
 const activeRol = async (req, res) => {
-    console.log(process.env.TOKEN_DISCORD)
+    // console.log(process.env.TOKEN_DISCORD)
     try {
         const { wallet } = req.body
         let conexion = await dbConnect()
@@ -25,7 +25,7 @@ const activeRol = async (req, res) => {
             let user_discrod = valid_user.rows[0].discord_id
             let user_id = valid_user.rows[0].id
 
-            console.log("esta es la wallet - ", wallet, "user discrod: ", user_discrod)
+            // console.log("esta es la wallet - ", wallet, "user discrod: ", user_discrod)
             let queryGql = gql`
                 query MyQuery($wallet: String!) {
                     nfts(where: {owner_id: $wallet, typetoken_id: "1"}) {
@@ -39,7 +39,7 @@ const activeRol = async (req, res) => {
             let variables = { wallet: wallet }
 
             let nft = await colsutaGraphql(queryGql, variables)
-            //console.log(nft.nfts)
+            //// console.log(nft.nfts)
 
             if (!nft.nfts.length > 0) {
                 return res.status(204).send({ error: "El usuario no tiene nfts"})
@@ -51,14 +51,14 @@ const activeRol = async (req, res) => {
             result.forEach((item, i) => { 
                 artistas += (result.length -1) != i ? item+',' : item
             })
-            console.log("resultado artistas_id: ", artistas)
+            // console.log("resultado artistas_id: ", artistas)
             
             let resultados = await conexion.query("   select bad.id, ba.id_collection as artist_id, role_id \
                                                         from backend_artistdiscord bad \
                                                         inner join backend_artist ba on ba.id = bad.artist_id  \
                                                         where ba.id_collection in (" + artistas + ")  \
             ");
-            console.log(resultados.rows)
+            // console.log(resultados.rows)
 
             let rol_user = await conexion.query(" select bad.role_id, bud.wallet  \
                 from backend_userroles bu \
@@ -67,15 +67,15 @@ const activeRol = async (req, res) => {
                 where bud.wallet = $1 \
                 group by bad.role_id, bud.wallet \
             ", [wallet])
-            console.log("resultado rol_user", rol_user.rows)
+            // console.log("resultado rol_user", rol_user.rows)
             for(let i = 0; i < resultados.rows.length; i++) {
                 let rol_id = resultados.rows[i].role_id.toString()
-                console.log("rol_id: ", rol_id, rol_user.rows.find(item => item.role_id == rol_id))
-                console.log("rol_user: ", rol_user.rows)
+                // console.log("rol_id: ", rol_id, rol_user.rows.find(item => item.role_id == rol_id))
+                // console.log("rol_user: ", rol_user.rows)
                 
                 let valid_rol_id = rol_user.rows.length > 0 ? rol_user.rows.find(item => item.role_id == rol_id) == undefined ? '' : rol_user.rows.find(item => item.role_id == rol_id)['role_id'] : ''
-                console.log("rol_id", rol_id, valid_rol_id)
-                console.log("debug", valid_rol_id, rol_id)
+                // console.log("rol_id", rol_id, valid_rol_id)
+                // console.log("debug", valid_rol_id, rol_id)
                 
                 if(valid_rol_id != rol_id) {
                     await lib.discord.guilds['@0.1.0'].members.roles.update({
@@ -102,7 +102,7 @@ const activeRol = async (req, res) => {
             res.json({result: "exito", data: ""})
         }
     } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.status(500).json({result: "error", data: error})
     }
 }

@@ -41,7 +41,7 @@ app.use('/api/v1', require('./app/routes'))
 
 
 httpsServer.listen(3070, () => {
-	console.log('HTTPS Server running on port 3070');
+	// console.log('HTTPS Server running on port 3070');
 });
 
 

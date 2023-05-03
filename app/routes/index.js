@@ -13,7 +13,7 @@ fs.readdirSync(pathRouter).filter((file) => {
     const skip = ['index'].includes(fileWithOutExt)
     if (!skip) {
         router.use(require(`./${fileWithOutExt}`))
-        console.log('Ruta Cargada ---->', fileWithOutExt)
+        // console.log('Ruta Cargada ---->', fileWithOutExt)
     }
 })
 
